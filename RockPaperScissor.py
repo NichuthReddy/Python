@@ -24,6 +24,7 @@ def WinLoss(your_choice,computer_choice):
         print("Computer Win")
         
 if __name__=="__main__":
+    emoji={'R':'🪨','P':'📰','S':'✂️'}
     while True:
         computer_choice=random.choice(['R','P','S'])
         while True:
@@ -32,6 +33,8 @@ if __name__=="__main__":
                 print("invalid choice")
             else:
                 break
+        print("You Choose ",emoji[your_choice])
+        print("computer Choose ",emoji[computer_choice])
         WinLoss(your_choice,computer_choice)
         if input("Do you want to play again? (y/n):")=='n':
             break
