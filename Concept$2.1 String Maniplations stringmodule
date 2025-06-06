@@ -1,0 +1,21 @@
+import string
+
+a_z= string.ascii_lowercase # for A_Z = string.ascii_uppercase
+
+c_b= string.ascii_lowercase[2:]+string.ascii_lowercase[:2] #he wanted to re order it from c to b
+
+"""there is number between every ascii character to know that number use ord("A") -> 65 to know which number indicates what ascii character chr(65) ->A. these helps to iterate or maps different alphabets together( I don't think you will need this anymore since I will show you more elegant way to translate). Like this we have methods which can bring data out of thin air. You have unicharacter which bring subscripts(H20), superscripts(x2), symbols, emojis etc """
+
+#print(ord("A"),chr(65))
+
+#He kinda want to encrypt some names, phone number and remove some char while doing
+
+print(str.maketrans( a_z, c_b,"cb")) #make his translation table of ascii values
+
+print("Mica:","Mica".translate( str.maketrans( a_z, c_b) ) ) # output: MKec since we are only tranulating lower case
+
+print("Mica:","Mica".translate( str.maketrans( a_z, c_b,"c") ) ) # he wants to remove c from original string. so make trans table maps c to None. It works lika a replacing character an you can also pass dictionary(will cover this at the end of this article) with mapping as the input
+
+phone_num="912345678"
+
+print("{}:".format(phone_num),phone_num.translate(str.maketrans("123456789","*"*9))) # want to mask Mica phone number and format is used to subsistute values in place holder({} or {0}(for positions)) of string
