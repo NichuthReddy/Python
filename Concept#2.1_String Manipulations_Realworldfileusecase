@@ -1,0 +1,24 @@
+path = "c://Desktop/file/#%#%file1file1file1.txt"
+#break it into small pieces
+print("path:",path)
+path_split = path.rsplit("/",1) # rsplit splits the whereever "/" is present since you mention to split only 1 time in second parameter, you will get 2 elements in the list and since it is rsplit(r indicates from right) it works from right to left. you can split method if you want to split from left
+print("path_split:",path_split)
+file = path_split[1] # I list also there is indexing where it start from 0,1,2,... since we have 2 elements 0 index : 1st element and 1 indes: 2nd element. we are picking the file full name by taking 1st index element
+#file = path.rpartition("/")[2] # we can do similar thing with rpartition but it always split 1 time and always give 3 elements tuple and it also stored seperator in middle element
+print("file:",file)
+file_remove_prefix = file.lstrip("#%$") # lstrip strips the list of characters on left side where rstrip on right and strip on both sides
+print("file_remove_prefix:",file_remove_prefix)
+file_remove_suffix = file_remove_prefix.removesuffix(".json").removesuffix(".txt") #removesuffix remove suffixes and removeprefix remove prefixes.
+print("file_remove_suffix:",file_remove_suffix)
+file_rep_count = file_remove_suffix.count(file_remove_suffix[0]) #Assuming file name character are distinct. so counting the first file_name character in the file_name(repetition)
+print("file_rep_count:",file_rep_count)
+file_org_length=len(file_remove_suffix)//file_rep_count # len is a built in python function to find length of any datatype, when divided by repeated count, we will get the original file count without duplication
+print("file_org_length:",file_org_length)
+file_dedup=file_remove_suffix[:file_org_length] #slicing the string till the length of original file to get original file name 
+print("file_dedup:",file_dedup)
+# Bonus for printing the variable and their values with only 1 print statment
+print("-"*50) #multiplies the "-" 50 times
+for name,value in locals().copy().items(): #we will talk everything in detail about it in upcoming article
+    if not name.startswith("__") and not callable(name) and not str(type(value)).startswith("<class 'module"):
+    #startswith method validates whether string starts with specific text Here(__ ,<class 'module) similarly we have endswith method to validate ends string and return true or false
+        print(f"{name} : {value}")
