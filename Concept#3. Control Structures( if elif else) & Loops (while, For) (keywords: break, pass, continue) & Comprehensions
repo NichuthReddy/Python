@@ -1,0 +1,36 @@
+#Problem: simple code to check whether certain fruit is available in super market if there is typo, give some suggestion else metion not available
+import difflib
+a="bannana"
+fruits=["apple","mango","banana","dragon"]
+
+if  a in fruits:
+    print(f"{a} is available")
+elif difflib.get_close_matches(a, fruits,3):
+    suggestions=difflib.get_close_matches(a, fruits,1)[0]
+    print(f"there seems to be a typo in the input {a}.\nAre you refering to {suggestions}")
+else:
+    print(f"{a} is not available")  
+
+#Problem: writing a while loop to print number from 1 to 10  while placing continue and break to show the effects of keywords
+a=1
+while a>=0 and a<=10:
+    if a==2:
+        a=a+1
+        continue # skip rest of the line in the loop for the current iteration
+    elif a==5:
+        break  # breaks out of loop. so skipping all the further iteration
+    print(a, end=" ")
+    a+=1 #a=a+1
+#o/p: 1 3 4
+
+#Problem: writing a for loop to print number from 1 to 10  while placing continue and break to show the effects of keywords
+
+for a in range(1,11):
+    if a==2:
+        a=a+1
+        continue # skip rest of the line in the loop for the current iteration
+    elif a==5:
+        break  # breaks out of loop. so skipping all the further iteration
+    print(a, end=" ")
+    a+=1 #a=a+1
+#o/p: 1 3 4
