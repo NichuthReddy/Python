@@ -1,0 +1,48 @@
+"""
+t1=(1,2,3,[1,2,3])
+print(t1.index([1,2,3]))
+t2=t1
+print("t1:",t1,",t2:",t2)
+t2[3].insert(1,4)
+print("After change")
+print("t1:",t1,",t2:",t2)
+"""
+"""
+s1={1,2,3}
+s2=s1.copy()
+s2.add(4)
+print("s1:",s1,"\ns2:",s2)
+"""
+"""
+print(dict.fromkeys([1,2,3],8))
+d={"a":1,"b":2,"c":3}
+print(d.setdefault("a",1))
+print(d)
+print(d.setdefault("d",0))
+print(d)
+d={"a":1,"b":2,"c":3}
+d["d"]=4
+print(d.popitem()) 
+print(d) 
+print(d.get('d','not found'))
+d={'a': 1, 'b': 2, 'c': 3}
+print(d.items()) #o/p:dict_items([('a', 1), ('b', 2), ('c', 3)])
+print(d.keys()) #o/p:dict_keys(['a', 'b', 'c'])
+print(d.values()) #o/p:dict_values([1, 2, 3])
+"""
+import json  # importing json module
+
+json_list_dict = '[{"name": "santhosh", "class": true, "age": 4}, {"name": "ram", "class": false, "age": 4}, {"name": "suresh", "class": true, "age": 4}]'
+
+print("input:",json_list_dict)
+# o/p:input: [{"name": "santhosh", "class": true, "age": 4}, {"name": "ram", "class": false, "age": 4}, {"name": "suresh", "class": true, "age": 4}]
+# this prints the string as it is
+list_dict= json.loads(json_list_dict) # loads take the dictionary or list of dictionaries stringas an input and parse & convert that into json. whereas load function take this input from file
+print("dictionary:",list_dict)
+#o/p:dictionary: [{'name': 'santhosh', 'class': True, 'age': 4}, {'name': 'ram', 'class': False, 'age': 4}, {'name': 'suresh', 'class': True, 'age': 4}]
+# python dictionary uses single quotes and bool type is like True, False.
+
+list_dict_json=json.dumps(list_dict) # converts the dictionary or list of dictionaries to valid json string where dump set it to file json.dump(list_dict_json, file_path,indent=4)
+print("json:",list_dict_json)
+# o/p:json: [{"name": "santhosh", "class": true, "age": 4}, {"name": "ram", "class": false, "age": 4}, {"name": "suresh", "class": true, "age": 4}]
+# json bool type is like true, false and it use double quotes
