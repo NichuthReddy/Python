@@ -1,0 +1,117 @@
+def extract():
+    for i in range(1, 100):  # simulate streaming source
+        yield i
+
+def transform(data):
+    for i in data:
+        if i % 2 == 0:
+            yield i * 10
+
+def load(data):
+    for record in data:
+        print(f"Loaded: {record}")
+
+# Simulate ETL
+data = extract()
+transformed = transform(data)
+load(transformed)
+
+#problem:
+
+import asyncio
+
+async def main():
+    result = await say_hello()
+    print(result)
+
+asyncio.run(main())  # ➝ Hello
+
+print(dict(zip([1,2,3,4],[5,6,7,8])))
+
+# closures
+def outer():
+    l=[] # local varaible to outer(global variable to inne)r any local variable(code inside the function and paratasis variable) can be accessed inside innner as part of inner is the closer function
+    def inner(new_name): #closure function
+        l.append(new_name) # local varaible to inner
+        print(l)
+    return inner
+
+outer()("apple") # o/p: ['apple']
+outer()("banana") # o/p: ['banana']
+f=outer() #Here outer() returns inner funcion which is assigned to f variable so f acts as inner function with persisted state of variable
+f("apple") # o/p: ['apple']
+f("banana") # o/p: ['apple', 'banana'] 
+
+# non local
+def outer():
+    l="eat " # local varaible to outer(global variable to inne)r any local variable(code inside the function and paratasis variable) can be accessed inside innner as part of inner is the closer function
+    def inner(new_name): #closure function
+        nonlocal l #only thing changed from closure to non local is this line without this line. you will get a unboundedlocalvariable error. Why because list is mutable so same varible can be changed where as string is immutable. so every time any maniplation happend on the string , variable we be discared and created again and assigned to new string. so l is looked as fresh local varible inside inner and it will only look in inner function where l value is assigned but l is not assigned in inner. so by using nonlocal keyword we are telling inner function that l is nonlocal variable(global)
+        l=l+new_name+" " # local varaible to inner
+        print(l)
+    return inner
+
+outer()("apple") # o/p: ['apple']
+outer()("banana") # o/p: ['banana']
+f=outer() #Here outer() returns inner funcion which is assigned to f variable so f acts as inner function with persisted state of variable
+f("apple") # o/p: ['apple']
+f("banana") # o/p: ['apple', 'banana'] 
+
+# decorators
+def func(f): # decorator function take function as an argument
+    def wrapper(*args,**kwargs): #wrapper function wraps the function with extra functionality or replace the existing functionality. It's best practice to give *args, **kwargs as parameters becuase if we don't and passed function has some parameters. then we don't know how many and it will throw an error becuase passed function is expecting some parameters
+        print("started")
+        result=f(*args,**kwargs) # result of the passed stored in a variable is a best practice. if passed function has a return statement it will skip executing next lines of code
+        print("ended")
+        return 1
+    return wrapper
+
+@func #func1=func(func1)   <-decorator
+def func1(val=2):
+    print("I am in func1",val)
+    
+func1(1)
+print(type(func1))
+print(func(func1))
+#func1=func(func1)
+print("_"*50) #separater line
+func1()
+print("\n",type(func1),"\n",sep="")
+func1(3)
+
+#asyncio
+
+#basics
+# async code can also run syncronously
+import asyncio  #first thing to use async code is to import asyncio module
+#import time
+
+async def task() -> None: # async key at front is way to define async function
+    print("start")
+    await asyncio.sleep(2) #await is tells complete this before moving to next lines if you don't use await without waiting for 2 seconds end will be printed and it is asyncronous because during the printing of end and after it. it is sleep for 2 sec. it basically stops the asyncronous beahviour and promote syncronous behaviour
+    # async function to sleep for 2 sec for a task
+    #time.sleep(2) #don't use normal sleep it defeats the purpose of asyncronous functionality and you can't await it next tasks has to wait for defined amount of time
+    print("end")
+    
+asyncio.run(task()) # to run the async function asyncio.run method is used
+
+# async code to run the tasks asynchronously or parallelly
+import asyncio
+
+async def task(task_name: str,wait_time: int) -> None: #defining the task function to reuse in the parallel_tasks main function
+    print(f"started-> {task_name} with estimated time of {wait_time} seconds")
+    await asyncio.sleep(wait_time)
+    print(task_name,"<-ended")
+    
+async def parallel_tasks(*tasks_args: tuple) -> None:
+    tasks=[]
+    for t,w in tasks_args:
+        tasks.append(asyncio.create_task(task(t,w))) #create_task is used to create the tasks. It has more methods like .done(), .cancelled() etc to do implement complex logics
+    await asyncio.gather(*tasks) # gather is used to run tasks concurently(simantaniously)
+
+# excuting the below tasks parallely
+asyncio.run(parallel_tasks(
+    ("task1",3),
+    ("task2",2),
+    ("task3",1)
+    ))
