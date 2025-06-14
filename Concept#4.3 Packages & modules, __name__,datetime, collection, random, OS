@@ -1,0 +1,12 @@
+
+print("__name__ :",__name__)
+if __name__=="__main__":
+    print("if condition")
+else:
+    print("else condition")
+
+from collections import Counter
+print(Counter('aaaaabbbc'))
+d = Counter('aaaaabbbc')
+print("most common:",d.most_common(1))
+print("leat common:",d.most_common()[-1][0])
