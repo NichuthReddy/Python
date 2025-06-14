@@ -1,0 +1,101 @@
+import threading
+import time
+
+def time_perf(f):
+    def wrapper(*arg,**kwargs):
+        a=time.time()
+        result = f(*arg,**kwargs)
+        print(f": {round(time.time()-a,0)} seconds to complete the task")
+        return result
+    return wrapper
+        
+@time_perf
+def task(task_name: str,time_to_complete: int) -> None:
+    time.sleep(time_to_complete)
+    print(f"{task_name} completed in {time_to_complete} seconds",end="")
+
+print("Tasks Running in sequence")
+print("-"*50)
+a=time.time()
+#tasks running in sequence, will take sum of time_to_complete of the tasks
+task("task1",5)
+task("task2",2)
+task("task3",1)
+print(round(time.time()-a,0),"seconds to complete the program")
+
+print("\nTasks Running with threads concurrently using old method")
+print("-"*50)
+
+a=time.time()
+t1=threading.Thread(target=task, args=("task1",5))
+t2=threading.Thread(target=task, args=("task2",2))
+t3=threading.Thread(target=task, args=("task3",1))
+t1.start()
+t2.start()
+t3.start()
+print(f"Before Join: All tasks are done with in {round(time.time()-a,0)} seconds")
+# Above print statement is running before completion of above 3 threads (t1,t2,t3) because these threads are not joined with Main program thread
+t1.join()
+t2.join()
+t3.join()
+#t3.daemon=True or t3.setDaemon(True)
+print(f"After Join: All tasks are done with in {round(time.time()-a,0)} seconds")# It should run the tasks with in 8 sec if it ran sequentially But It completed all 3 tasks with in 5 sec which is concurrent run.
+#What happen if I set Deamon to true
+print("\nTasks Running with Daemon thread")
+print("-"*50)
+a=time.time()
+t4=threading.Thread(target=task, args=("task4",3), daemon=True)
+t4.start()
+
+print(f"Before Join: All tasks are done with in {round(time.time()-a,0)} seconds") #It completed the program without completing the t4 thread because it is a daemon thread it get instantly killed once last line of main program executed. if I add t4. join in next line then it may work
+#t4.join()
+
+
+import concurrent.futures
+import time
+
+def time_perf(f):
+    def wrapper(*arg,**kwargs):
+        a=time.time()
+        result = f(*arg,**kwargs)
+        print(f": {round(time.time()-a,0)} seconds to complete the task")
+        return result
+    return wrapper
+        
+@time_perf
+def task(task_name: str,time_to_complete: int) -> None:
+    time.sleep(time_to_complete)
+    print(f"{task_name} completed in {time_to_complete} seconds",end="")
+
+print("Tasks Running concurrently by using submit method")
+print("-"*50)
+a=time.time()
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    t1=executor.submit(task,"task1",2)
+    t2=executor.submit(task,"task2",5)
+    t3=executor.submit(task,"task3",1)
+    #print(t1.result(),t2.result(),t3.result(),sep="\n")
+print(f"all tasks completed in {time.time()-a} sec")
+
+print("\nTasks Running concurrently in loop by using submit method")
+print("-"*50)
+a=time.time()
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    result=[executor.submit(task,t_name,t_t_cmpt) for t_name,t_t_cmpt in [["task1",2],["task2",5],["task3",1]]]
+    #print("result:",list(result)) # It gives list of future objects to run
+    #for f in concurrent.futures.as_completed(result):
+        #print(f.result())
+    #print(t1.result(),t2.result(),t3.result(),sep="\n")
+print(f"all tasks completed in {time.time()-a} sec")
+
+print("\nTasks Running concurrently in loop by using map method")
+print("-"*50)
+a=time.time()
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    task_name=["task1","task2","task3"]
+    time_to_complete=[2,5,1]
+    executor.map(task, task_name, time_to_complete)
+print(f"all tasks completed in {time.time()-a} sec")
+
+
+
