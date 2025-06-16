@@ -1,0 +1,246 @@
+#1
+class building:
+    inner_wall_color ='white' #class variable
+    def __init__(self,width: int =200,length: int =1000) -> None: #__int__ is a parametrized constructor if except self no parameters are present then it is called default constructor
+        self.width = width #self indicates it is object attributes where each object has it's own attribute while creating the object, object name is passed to class as self
+        self.length = length #instance variable
+        self.paint ='Asian'
+        
+    @staticmethod #decorator
+    def area_static(w : int,l : int) -> int: #static or class method
+        return w*l
+    def set_area(self,w : int,l : int) -> None: #instance method
+        self.area = w*l
+        print(f'area of the builid is {self.area} with {self.inner_wall_color} inner wall color')
+
+building1=building() # builidng1 object is created with width 200, lenght 1000 and paint 'Asain'
+building2=building(100,100) # builidng1 object is created with width 100, lenght 100 and paint 'Asain'
+print(f"building1 -> width: {building1.width}, length: {building1.length}, paint: {building1.paint}") # accessing the object attributes outside of class
+print(f"building2 -> width: {building2.width}, length: {building2.length}, paint: {building2.paint}")
+print(building.area_static(150,100))
+building2.set_area(150,100)
+        
+#2.Access Modifiers
+class accessModifiers:
+    public =1
+    _protected=2
+    __private=3
+    def fn_public(self):
+        print(f"Inside public: {self.public}")
+    def _fn_protected(self):
+        print(f"Inside protected: {self._protected}")
+    def __fn_private(self):
+        try:
+            print(f"From __fn_private Inside private")
+        except AttributeError as ae:
+            print(ae)
+            
+    def Inside_class(self):
+        try:
+            print(f"\n{'='*60}\nInside class\n{'-'*60}")
+            print(f"Public:{self.public},Protected:{self._protected},Private:{self.__private}")
+            print(f"\nMethods: Public:{self.fn_public},Protected:{self._fn_protected},Private:{self.__fn_private}")
+            
+        except AttributeError as ae:
+            print(ae)
+    
+            
+class Inherited(accessModifiers):
+    def fn_public(self):
+        print(f"Inherited class ->Inside public: {self.public}")
+    def _fn_protected(self):
+        print(f"Inherited class ->Inside protected: {self._protected}")
+    def __fn_private(self):
+        try:
+            print(f"Inherited class ->Inside private: {self.__private}")
+        except AttributeError as ae:
+            print(ae)
+            
+    def get_private(self):
+        try:
+            print(f"Inherited class ->Inside private: {self.__private}")
+        except AttributeError as ae:
+            print(ae)
+        
+
+    
+acsMod = accessModifiers()
+Inh = Inherited()
+print(f"{'='*60}\nOutside the class access variables and functions:\n{'_'*60}")
+
+print('varaibles:\npublic:',acsMod.public)
+print('_protected:',acsMod._protected)
+try:
+    print('__private:',acsMod.__private)
+except AttributeError as ae:
+    print(ae,"\n\nmethods:")
+acsMod.fn_public()
+acsMod._fn_protected()
+try:
+    acsMod.__fn_private()
+except AttributeError as ae:
+    print(ae)
+
+print(f"\n{'='*60}\nInside inherited class:\n{'_'*60}")
+print('varaibles:\npublic:',Inh.public)
+print('_protected:',Inh._protected)
+try:
+    print('__private:',Inh.__private)
+except AttributeError as ae:
+    print(ae,"\n\nmethods:")
+Inh.fn_public()
+Inh._fn_protected()
+try:
+    Inh.__fn_private()
+except AttributeError as ae:
+    print(ae)
+Inh.get_private()
+
+acsMod.Inside_class()
+
+#3.1 Inheritance
+class parent:
+    p='parent'
+    def fn(self):
+        print("fn call from parent")
+class child(parent):
+    ...
+ch=child()
+print(ch.p)
+ch.fn()
+
+#3.2 method overwritten or overridden
+
+class parent:
+    p='parent'
+    def fn(self):
+        print("fn call from parent")
+class child(parent):
+    p='child'
+    def fn(self):
+        print("fn call from child")
+ch=child()
+print(ch.p)
+ch.fn()
+
+#3.3 multiple Inheritance
+class parent1:
+    p1='parent1'
+    def fn(self):
+        print("fn call from parent1")
+class parent2:
+    p2='parent2'
+    def fn(self):
+        print("fn call from parent2")
+class child(parent1,parent2):
+    p1='child'
+
+ch=child()
+print(ch.p1, ch.p2, sep="\n")
+ch.fn()
+
+#3.4 multi level inheritance
+class grandparent:
+    gp='grandparent'
+    def fn(self):
+        print("fn call from grand parent")
+class parent(grandparent):
+    p='parent2'
+    def fn(self):
+        print("fn call from parent")
+class child(parent):
+    ...
+
+ch=child()
+print(ch.gp, ch.p, sep="\n") #o/p: parent1 \n parent2
+ch.fn() # fn call from parent
+
+#3.4 super()
+class grandparent:
+    def fn(self):
+        print("fn call from grand parent")
+    def fn1(self):
+        print("fn1 call from grand parent")
+class parent(grandparent):
+    def fn(self):
+        print("fn call from parent")
+        super().fn()
+        
+class child(parent):
+    def fn(self):
+        print("fn call from child")
+        super().fn()
+        super().fn1()
+        
+c=child()
+c.fn()
+
+#4 Abstraction
+
+from abc import ABC, abstractmethod
+
+class vehicle(ABC):
+    def __init__(self,no_of_wheels=4):
+        self.no_of_wheels = no_of_wheels
+        
+    @abstractmethod
+    def start(self):
+        print("started the vehicle")
+        
+    def stop(self):
+        print("stoped the vehicle")
+
+class car(vehicle):
+    def start(self):
+        print("started the car")
+
+class bike(vehicle):
+    def start(self):
+        print("started the bike")
+    def stop(self):
+        print("stopped the bike")
+        
+c = car()
+b = bike(2)
+print(f"car no of wheels: {c.no_of_wheels}")
+c.start()
+c.stop()
+
+print(f"bike no of wheels: {b.no_of_wheels}")
+b.start()
+b.stop()
+
+# 5 Encapsulation
+
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance  # private variable
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+
+    def get_balance(self):
+        return self.__balance
+
+acc = BankAccount(1000)
+acc.deposit(500)
+print(acc.get_balance())  # ✅ Output: 1500
+print(acc.__balance)      # ❌ Error (encapsulation hides it)
+
+# 6 composition
+
+class Engine:
+    def start(self):
+        print("Engine started")
+
+class Car:
+    def __init__(self):
+        self.engine = Engine()  # Composition
+
+    def drive(self):
+        self.engine.start()
+        print("Car is moving")
+
+c = Car()
+c.drive()
