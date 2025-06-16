@@ -28,6 +28,35 @@ asyncio.run(main())  # ➝ Hello
 
 print(dict(zip([1,2,3,4],[5,6,7,8])))
 
+#Recursion factorial
+
+def fact(n):
+    if n==0 or n==1: #base condition
+        return 1     #base return value
+    else:
+        return n*fact(n-1) # recursion expression
+        
+print(fact(5))
+
+#Recursion flatten dictionary
+d={"student":{"name":"vijay", "age":15}, "class":{"name":"10th", "section":"A"}}
+flat_d={}
+def flatten_dict(key, value) ->dict:
+    if type(value)==dict:
+        for k, v in value.items():
+            key= key+'-'+ k
+            value=v
+            if type(v)==dict:
+                faltten_dict(v)
+            flat_d[key] = value 
+    else:
+        flat_d[key]=value
+    
+for key, value in d.items():
+    flatten_dict(key, value)
+
+print(flat_d)
+
 # closures
 def outer():
     l=[] # local varaible to outer(global variable to inne)r any local variable(code inside the function and paratasis variable) can be accessed inside innner as part of inner is the closer function
