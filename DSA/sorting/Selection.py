@@ -9,6 +9,6 @@ class Solution:
 
     selectsort = Solution
 
-    nums = [5, 2, 9, 1, 5, 6]
+    nums = [5, 2, 9, 1, 5, 6, 3] #testing
     
     selectsort.selectionsort(nums)
